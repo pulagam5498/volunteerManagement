@@ -1,0 +1,423 @@
+<apex:page sidebar="flase" cache="true" expires="60" Controller="ContactVolunteerExtension" showHeader="false" standardStylesheets="true">
+  <!-- Page Header -->
+ 
+ 
+  <!-- Begin Form --> 
+  <apex:define name="body">
+  <apex:form >
+  <h1>
+      <apex:messages id="error" styleClass="errorMsg" layout="table" style="margin-top:lem"/>
+        <apex:pageBlock title="AdvancedED Volunteer Profile" mode="edit">
+        
+        <!--PageBlocksection -->      
+        <apex:pageBlockSection columns="1" showHeader="true" title="Contact Information"> 
+      
+        
+        
+        
+    <apex:selectList label="*Prefered Title:" value="{!selSalutate}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!SalutationOptions}" />
+                                                </apex:selectList>  
+        
+        
+        
+        
+        
+        <h1> *Name</h1>
+        <apex:inputtext label="First name" value="{!Volunteer.FirstName}"/> 
+        <apex:inputtext label="Middle Intial" value="{!Volunteer.Middle_Initial__c}" /> 
+        <apex:inputtext label="last name" value="{!Volunteer.LastName}"/>   
+        
+   
+    
+    
+       
+        <h1> *Residence</h1>
+          
+       
+        
+        
+        <apex:selectList label="Country" value="{!selCountry}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!CountriesOptions}" />
+                                                </apex:selectList>
+        
+        
+        <apex:selectList label="state/province" value="{!selState}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!StateOptions}" />
+                                                </apex:selectList>
+        
+        
+        <apex:inputText label="City" value="{!Volunteer.City__c}" />
+        <apex:inputText label="Street Address" value="{!Volunteer.Street_Address__c}" />
+        <apex:inputText label="Zip/Postal Code" value="{!Volunteer.Zip_Postal_Code__c}"/>
+        
+        <br/><br/>
+        
+         
+        <apex:inputtext label="*Mobile phone number (Including countr and city code)" value="{!Volunteer.phone}"/><br/>
+         <apex:outputText label="*your prefered email address"/> 
+        <apex:outputField label="(if you are registered with AdvancedED, please use that email address" value="{!Volunteer.Email}" />
+            
+        </apex:pageBlockSection>
+      
+      <apex:pageBlockSection columns="1" showHeader="true" title="Emergency Conatct information"><br/>
+          <apex:inputtext label="Name" value="{!Volunteer.Emergency_Name__c}" />
+          <apex:inputtext label="Relationship" value="{!Volunteer.Emergency_Relationship__c}" />
+          <apex:inputtext label="Telephone" value="{!Volunteer.Emergency_Telephone__c}" />
+          <apex:inputtext label="Address" value="{!Volunteer.Emergency_Address__c}" /><br/>
+      </apex:pageBlockSection>
+  
+  
+  
+        <apex:pageBlockSection columns="1" showHeader="true" title="More About You"><br/>
+        
+        
+        
+       <apex:pageBlockSection id="test12">
+       <c:MultiSelectPicklist leftLabel="Please select all languages in which you are fluent (check all that apply)"
+                leftOption="{!LanguageOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!LanguageOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+        
+        
+        <apex:inputtext label="Other (please specify)" size="40" value="{!Volunteer.Other_Languages__c}" /><br/>        
+        <apex:inputtextarea label="Please list all countries where you have worked in education" cols="55" rows="2" value="{!Volunteer.list_of_countries_you_have_worked__c}" />    
+        <apex:outputText label=" (separated by commas)"/>  <br/>
+        
+       
+
+        <apex:selectList label="*Where would you like to serve?" value="{!selServe}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!ServeOptions}" />
+                                                </apex:selectList>
+
+
+
+
+       <apex:outputText label=" (please select one)"/><br/>
+        </apex:pageBlockSection>
+      
+      <apex:pageBlockSection columns="1" showHeader="true" title="international service"><br/>
+      <apex:inputtext label="*Passport Number" value="{!Volunteer.Passport_Number__c}" />
+      <apex:inputtext label="*Country Of Issuance" value="{!Volunteer.Country_of_Issunace__c}" />
+      <apex:inputtext label="*Expiration Date" value="{!Volunteer.Expiration_Date__c}" />
+      <apex:inputtext label="*Please list all countries you have visited within the last 12 months" value="{!Volunteer.List_all_Countries_visited_in_12_months__c}" />
+      <apex:outputText label=" (separated by commas)"/>
+      <br/>
+      <h1>Please send a legible, scanned copy of the picture page from your passport to<apex:outputLink value="mailto:mcleod@advanc-ed.org">smcleod@advanc-ed.org</apex:outputLink></h1>
+      </apex:pageBlockSection>
+      
+      
+      <apex:pageBlockSection columns="1" showHeader="true" title="Your Current Employment status">
+          
+          <br/>
+          <h1>Please tell us about your current employment status. If retired, please check Retired,and enter the year of your retirement,and provide the last institution where you were employed and your mostrecent title there.</h1>
+                                                                                                                                   
+          <br/><br/>
+          
+      
+      
+      
+       <apex:selectList label="*Employment Status" value="{!selEmpStatus}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!EmpStatusOptions}" />
+                                                </apex:selectList>
+
+      
+      
+      
+      
+      
+      
+      
+      <apex:inputtext label=" If Retired (please specify)" value="{!Volunteer.Retired__c}" />
+      <apex:inputtext label="*Name of your school or organization" value="{!Volunteer.Name_of_your_School_or_ORganization__c}" />
+      <apex:inputtext label="*City and state or country where your school or organization is located" value="{!Volunteer.Your_School_or_organization_located_in__c}" />
+      <apex:inputtext label="Your job title" value="{!Volunteer.your_Job_Title__c}" />
+      <apex:inputtext label="*Years of experience in education" value="{!Volunteer.Years_of_experience_in_education__c}" />
+      </apex:pageBlockSection>
+      
+      
+      <apex:pageBlockSection columns="2" showHeader="true" title="Your Educational Background">
+      
+        
+      <apex:pageBlockSection id="test123">
+       <c:MultiSelectPicklist leftLabel="*Subject Content specialties (check all that apply)"
+                leftOption="{!SubjectSpecialitiesOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!SubjectSpecialitiesOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+      <apex:inputtext label="Other (please specify)" size="40" value="{!Volunteer.Subject_Specialties_Other__c}" />
+      
+      
+      <apex:pageBlockSection id="test1">
+       <c:MultiSelectPicklist leftLabel="*Area specialties (check all that apply)"
+                leftOption="{!AreaSpecialitiesOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!AreaSpecialitiesOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+      <apex:inputtext label="Other (please specify)" size="40" value="{!Volunteer.Area_Specialties_other__c}" />
+      
+      
+      <apex:pageBlockSection id="test2">
+       <c:MultiSelectPicklist leftLabel="*Grade level specialties (check all that apply)"
+                leftOption="{!GradeSpecialitiesOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!GradeSpecialitiesOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+       <apex:inputtext label="Other (please specify)" size="40" value="{!Volunteer.Grade_Level_Other__c}" />
+ 
+ 
+ <apex:pageBlockSection id="test3">
+       <c:MultiSelectPicklist leftLabel="*Instructional specialties (check all that apply)"
+                leftOption="{!InstructionalSpecialitiesOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!InstructionalSpecialitiesOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+           
+      <apex:inputtext label="Other (please specify)" size="40" value="{!Volunteer.Instructional_Other__c}" />
+        
+      <apex:pageBlockSection id="test4">
+       <c:MultiSelectPicklist leftLabel="*Institutions specialties (check all that apply)"
+                leftOption="{!InstitutionsSpecialitiesOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!InstitutionsSpecialitiesOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+      <apex:inputtext label="Other (please specify)"  size="40" value="{!Volunteer.Institutions_Other__c}" />
+      
+      
+      
+      <apex:selectList label="*Have you worked with a Faith based institution?" value="{!selFaithBasedInstitute}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!FaithBasedInstituteOptions}" />
+                                                </apex:selectList>  <br/>
+      
+      
+      
+      
+       <apex:selectList label="*If so, please choose" value="{!selFaithChoose}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!FaithChooseOptions}" />
+                                                </apex:selectList> <br/>
+      
+    <apex:selectList label="*Do you have experience with AdvancED or any other accrediting agency?" value="{!selOtherAccrediting}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!OtherAccreditingOptions}" />
+                                                </apex:selectList> <br/>
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      </apex:pageBlockSection>
+     
+      
+      <apex:pageBlockSection columns="1" showHeader="true" title="Your Accreditation Experience"><br/>
+      
+      
+      
+      
+      
+      
+      
+        
+      <apex:pageBlockSection id="test5">
+       <c:MultiSelectPicklist leftLabel="Accreditation affiliation and experience (check all that apply)"
+                leftOption="{!AccreditationOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!AccreditationOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+      <apex:inputtext label="Other (please specify)"  size="40" value="{!Volunteer.Accreditation_other__c}" /> <br/>
+      
+       <apex:pageBlockSection id="test6">
+       <c:MultiSelectPicklist leftLabel="*In what roles have you served AdvancED? (check all that apply)"
+                leftOption="{!RolesOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!RolesOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+       <apex:pageBlockSection id="test7">
+       <c:MultiSelectPicklist leftLabel="AdvancED Engagement Review Team Experience (check all that apply)"
+                leftOption="{!TeamOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!TeamOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+        <apex:pageBlockSection id="test8">
+       <c:MultiSelectPicklist leftLabel="Regions where you have already served as a Lead Evaluator or team member (check all that apply)"
+                leftOption="{!RegionsOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!RegionsOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+      <br/>
+      <apex:selectList label="*I am eleot 2.0 certified" value="{!selEleot}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!EleotOptions}" />
+                                                </apex:selectList> <br/>
+      </apex:pageBlockSection>
+     
+      <apex:pageBlockSection columns="1" showHeader="true" title=" How I Want to Serve">
+     
+      <apex:pageBlockSection id="test9">
+       <c:MultiSelectPicklist leftLabel="I would like to serve as (check all that apply)"
+                leftOption="{!LiketoserveOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!LiketoserveOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+      <br/>
+     <br/>
+     <br/>
+     
+      
+    <apex:selectList label="*Availability" value="{!selAvailability}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!AvailabilityOptions}" />
+                                                </apex:selectList> <br/>
+     </apex:pageBlockSection>
+     
+      <apex:pageBlockSection columns="1" showHeader="true" title="Types of Reviews"><br/>
+      <br/>
+      
+       <apex:pageBlockSection id="test10">
+       <c:MultiSelectPicklist leftLabel="On what types of teams are you interested in serving?"
+                leftOption="{!TypesofteamsOptionsall}"
+                rightLabel="Selected Contacts"
+                rightOption="{!TypesofteamsOptionsselected}"
+                size="14"
+                width="150px"/>
+      </apex:pageBlockSection>
+      
+     <apex:pageBlockSection columns="1" showHeader="true" title="Tell Us Little More">
+         
+         <br/>
+          <h1>Your biographical sketch should be 200 words or less, and should be written in third person. Include:
+Current role/position<br/>
+Education credentials (date attained not necessary)<br/>
+Professional experiences (jobs and roles)<br/>
+Expertise/experience related to AdvancED<br/>
+Publications (optional, if any)<br/>
+Please do not include personal or family information. Below is an example of a good biographical sketch.
+Sample.
+                                   <br/><br/>
+                                  
+Dr. Bohling joined AdvancED in 2006, and serves as the Chief of Global Operations leading the organization’s global initiatives and
+partnerships and overseeing the global continuous improvement and accreditation functions, policies, and procedures for accredited
+institutions and school systems in the AdvancED network around the world. Bohling’s professional career spans 39 years, including
+the fields of education, business, and law. Her experience includes teacher, administrator, deputy state superintendent,
+interpreter/translator, and attorney. She was the chief architect in the design of Wyoming’s assessment and accountability system
+under No Child Left Behind and served on the national committee for formative assessment. Dr. Bohling has earned degrees from the
+University of Tulsa College of Law, University of Wyoming, Northeastern State University in Oklahoma, and Oklahoma State
+University.</h1>                                                                                                                                                                                              
+      
+      <br/><br/>
+         
+         
+     <apex:inputtextarea label="*Please write a brief (200 words or less) biographical sketch" cols="175" rows="15"  value="{!Volunteer.Biographical_sketch__c}" />
+     </apex:pageBlockSection>
+            
+     <apex:pageBlockSection columns="1" showHeader="true" title="Esaay"><br/>
+     <apex:inputtextarea label="Please write a brief (300 words or less) statement about your qualifications and why you want to serve as an AdvancED volunteer." cols="175" rows="15" value="{!Volunteer.Qulification__c}" />
+     </apex:pageBlockSection>
+      
+ 
+
+     <apex:pageBlockSection columns="1" showHeader="true" title=" Professional Refereneces"><br/>
+     
+     <h1>*Professional Referenece #1</h1><br/>
+     <apex:inputtext label="Name" value="{!Volunteer.Ref1_Name__c}" />
+     <apex:inputtext label="Company" value="{!Volunteer.Ref1_company__c}" />
+     <apex:inputtext label="Address" value="{!Volunteer.Ref1_Address__c}" />
+     <apex:inputtext label="Address2" value="{!Volunteer.Ref1_Address2__c}" />
+     <apex:inputtext label="City/Town" value="{!Volunteer.Re1f_City_Town__c}" /> 
+     <apex:inputtext label="State/Province" value="{!Volunteer.Ref1_State_Province__c}" /> 
+     <apex:inputtext label="Zip/Postal Code" value="{!Volunteer.Ref1_Zip_Postal_Code__c}" />
+     <apex:inputtext label="Country" value="{!Volunteer.Ref1_Country__c}" />
+     <apex:inputtext label="Email Address" value="{!Volunteer.Ref1_Email_Address__c}" />
+     <apex:inputtext label="Phone Number" value="{!Volunteer.Ref1_Phone_Number__c}" /><br/>
+   
+      
+     <h1>*Professional Referenece #2</h1><br/>
+     <apex:inputtext label="Name" value="{!Volunteer.Ref2_Name__c}" />
+     <apex:inputtext label="Company" value="{!Volunteer.Ref2_company__c}" />
+     <apex:inputtext label="Address" value="{!Volunteer.Ref2_Address__c}" />
+     <apex:inputtext label="Address2" value="{!Volunteer.Ref2_Address2__c}" />
+     <apex:inputtext label="City/Town" value="{!Volunteer.Ref2_City_Town__c}" /> 
+     <apex:inputtext label="State/Province" value="{!Volunteer.Ref2_State_Province__c}" /> 
+     <apex:inputtext label="Zip/Postal Code" value="{!Volunteer.Ref2_Zip_Postal_Code__c}" />
+     <apex:inputtext label="Country" value="{!Volunteer.Ref2_Country__c}" />
+     <apex:inputtext label="Email Address" value="{!Volunteer.Ref2_Email_Address__c}" />
+     <apex:inputtext label="Phone Number" value="{!Volunteer.Ref2_Phone_Number__c}" />
+     </apex:pageBlockSection>
+      
+</apex:pageBlockSection>
+      <!-- Button Section -->
+      <apex:pageBlockButtons location="bottom">
+        <apex:commandButton value="Save" action="{!savecontact}" />
+          
+      </apex:pageBlockButtons>
+      
+    </apex:pageBlock>
+      </h1>
+  </apex:form>
+        </apex:define> 
+         
+  <!-- CSS -->
+  <style>
+    .logo {
+      float: right;
+      width: 60px;
+      margin: -65px 20px 0 0;
+    }
+    .rules {
+      color: red;
+      font-size: 18px;
+      font-family: Courier;      
+      margin: 10px 0 10px 30px;
+      float: left;
+      width: 100%;
+    }
+  </style>
+</apex:page>

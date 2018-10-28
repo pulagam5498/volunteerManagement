@@ -1,0 +1,251 @@
+<apex:page docType="html-5.0" standardController="Assignment__c"  extensions="ContactSearchController" readonly="true" showHeader="false" sidebar="false"  cache="false">
+<apex:form style="width:100%; text-align:center; margin:auto;" >
+<apex:sectionHeader title="Volunteer Search" />
+
+<br/>
+
+
+
+<apex:pageBlock >
+
+<apex:pageBlockSection columns="6">
+ 
+
+
+   Start Date (MM/DD/YYYY): <apex:input type="date" value="{!StartDate}" html-placeholder="MM/DD/YYYY"/>
+    End Date (MM/DD/YYYY): <apex:input type="date" value="{!EndDate}" html-placeholder="MM/DD/YYYY"/>
+
+    Country: <apex:selectList value="{!selectedCountry}" size="1" multiselect="false">                                    
+                  <apex:selectOptions value="{!CountryOptions}"/>
+    </apex:selectList> 
+    
+      StateProvince: <apex:selectList value="{!selectedStateProvince}" size="1" multiselect="false">                                    
+               <apex:selectOptions value="{!StateProvinceOptions}"/>
+  </apex:selectList> 
+     
+    CertificationType: <apex:selectList value="{!selectedcertType}" size="1" multiselect="false">                                    
+                  <apex:selectOptions value="{!CertificationTypeOptions}"/>
+    </apex:selectList> 
+    
+    AssignmentRole: <apex:selectList value="{!selectedAssignmentRole}" size="1" multiselect="false">                                    
+                  <apex:selectOptions value="{!AssignmentRoleOptions}"/>
+    </apex:selectList> 
+    
+    
+    
+     EleotCertified: <apex:selectList value="{!selectedEleotCertified}" size="1" multiselect="false">                                    
+                  <apex:selectOptions value="{!EleotCertifiedOptions}"/>
+    </apex:selectList> 
+    
+   
+   
+     ExperienceAdvanced: <apex:selectList value="{!selectedExperienceAdvancedOptions}" size="1" multiselect="false">                                    
+                  <apex:selectOptions value="{!ExperienceAdvancedOptions}"/>
+    </apex:selectList> 
+     Available: <apex:selectList value="{!selectedAvailable}" size="1" multiselect="false">                                    
+                  <apex:selectOptions value="{!AvailableOptions}"/>
+    </apex:selectList> 
+    
+    EmployStatus: <apex:selectList value="{!selectedEmployStatus}" size="1" multiselect="false">                                    
+                  <apex:selectOptions value="{!EmployStatusOptions}"/>
+    </apex:selectList> 
+    
+     
+     <apex:inputfield value="{!Assignment__c.Engagement__c}" required="false"/>
+ 
+    
+    </apex:pageBlockSection>
+    
+    
+    
+    
+    
+    
+    <apex:pageBlockSection columns="2">
+    
+    <apex:pageBlockSectionItem >
+    SubjectSpeciality: <apex:selectList value="{!selectedSubjectSpeciality}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!SubjectSpecialityOptions}"/>
+    </apex:selectList>     
+    </apex:pageBlockSectionItem>
+    
+    
+    
+    <apex:pageBlockSectionItem >
+    RegionServed: <apex:selectList value="{!selectedRegionServed}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!RegionServedOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+    Languages: <apex:selectList value="{!selectedLanguages}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!LanguagesOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+    InstructionalExp: <apex:selectList value="{!selectedInstructionalExp}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!InstructionalExpOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+    TypesInstitutionWorked: <apex:selectList value="{!selectedTypesInstitutionWorked}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!TypesInstitutionWorkedOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+    WouldServe: <apex:selectList value="{!selectedWouldServe}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!WouldServeOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+   
+    <apex:pageBlockSectionItem >
+    GradeSpeciality: <apex:selectList value="{!selectedGradeSpeciality}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!GradeSpecialityOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+    AccExperience: <apex:selectList value="{!selectedAccExperience}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!AccExperienceOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+    AreaSpecialty: <apex:selectList value="{!selectedAreaSpecialty}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!AreaSpecialtyOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    <apex:pageBlockSectionItem >
+    EngagementRevExpOptions: <apex:selectList value="{!selectedEngagementRevExp}" size="10" multiselect="true">                                    
+                  <apex:selectOptions value="{!EngagementRevExpOptions}"/>
+    </apex:selectList> 
+    </apex:pageBlockSectionItem>
+    
+    </apex:pageBlockSection>
+    
+    
+</apex:pageBlock>
+
+    <apex:commandButton value="Enter Search (Contact)" action="{!SubmitButton}" reRender="cont,myPanel" status="actStatusId"/>
+      
+    
+    <apex:actionStatus id="actStatusId">
+                <apex:facet name="start" >
+                    <img src="/img/loading.gif"/>                   
+                </apex:facet>
+    </apex:actionStatus>
+    
+    
+    
+    
+
+     <apex:pageBlock title="Volunteers" id="cont">
+    
+   <apex:pageBlockButtons location="top" >
+   <apex:outputPanel id="myButtons">
+   
+        <apex:commandButton action="{!Beginning}" title="Beginning" value="<<" disabled="{!disablePrevious}" reRender="myPanel,myButtons"/>
+        <apex:commandButton action="{!Previous}" title="Previous" value="<" disabled="{!disablePrevious}" reRender="myPanel,myButtons"/>        
+        <apex:commandButton action="{!Next}" title="Next" value=">" disabled="{!disableNext}" reRender="myPanel,myButtons"/>
+        <apex:commandButton action="{!End}" title="End" value=">>" disabled="{!disableNext}" reRender="myPanel,myButtons"/>    
+
+   
+   </apex:outputPanel>
+   </apex:pageBlockButtons>
+   
+  
+  
+
+
+   <apex:pageBlockSection columns="1">
+       <p>Here You can get the list of records of Contact which are matching with your text</p>
+   </apex:pageBlockSection>
+
+   <apex:outputPanel id="myPanel" >
+   <apex:pageBlockSection title="Total Number Of Volunteers Found (Total List Size: {!total_size})" collapsible="false">
+   <apex:outputPanel layout="block"  id="p1" style="align:center;">
+   <apex:pageMessages id="theMessages" />
+   
+   <apex:pageBlockTable value="{!conListWithAssignment}" var="n" align="center"  rendered="{!Assignment}"> 
+    <apex:column >
+        <apex:outputLink target="_blank" value="/{!n.Contact__r.Id}">
+         <apex:outputText value="{!left(n.Contact__r.LastName,25)}">
+         
+         </apex:outputText>
+        </apex:outputLink> 
+      </apex:column>
+   
+        <apex:column value="{!n.Contact__r.FirstName}" />
+        <apex:column value="{!n.Contact__r.LastName}" />
+        <apex:column value="{!n.Contact__r.Phone}" />
+       <apex:column value="{!n.Contact__r.Email}" />  
+       <apex:column value="{!n.Contact__r.City__c}" />
+     <apex:column value="{!n.Contact__r.State_Province2__c}" /> 
+       <apex:column width="250px" value="{!n.Contact__r.Availability__c}" />
+       <apex:column value="{!n.Contact__r.Number_of_Certifications__c}" />
+       <apex:column value="{!n.Contact__r.Number_of_Reviews__c}" />
+    
+        <apex:facet name="footer">Showing Page # {!pageNumb} of {!totalPages} rendered</apex:facet>
+   </apex:pageBlockTable>
+   
+   
+  <apex:pageBlockTable value="{!conListWithCertification}" var="n" align="center" rendered="{!certification}"> 
+    <apex:column >
+        <apex:outputLink target="_blank" value="/{!n.Contact__r.Id}">
+         <apex:outputText value="{!left(n.Contact__r.LastName,25)}">
+         </apex:outputText>
+        </apex:outputLink> 
+      </apex:column>
+   
+        <apex:column value="{!n.Contact__r.FirstName}" />
+        <apex:column value="{!n.Contact__r.LastName}" />
+        <apex:column value="{!n.Contact__r.Phone}" />
+       <apex:column value="{!n.Contact__r.Email}" />  
+       <apex:column value="{!n.Contact__r.City__c}" />
+       <apex:column value="{!n.Contact__r.State_Province2__c}" />
+            <apex:column width="250px" value="{!n.Contact__r.Availability__c}" />
+       <apex:column value="{!n.Contact__r.Number_of_Certifications__c}" />
+       <apex:column value="{!n.Contact__r.Number_of_Reviews__c}" />
+       
+        <apex:facet name="footer">Showing Page # {!pageNumb} of {!totalPages} rendered</apex:facet>
+   </apex:pageBlockTable>
+   
+   
+   
+   
+    <apex:pageBlockTable value="{!conList}" var="n" align="center" rendered="{!conList.size > 0}">
+   
+    <apex:column >
+        <apex:outputLink target="_blank" value="/{!n.Id}">
+         <apex:outputText value="{!left(n.LastName,25)}">
+         </apex:outputText>
+        
+        </apex:outputLink> 
+      </apex:column>
+   
+        <apex:column value="{!n.FirstName}" />
+        <apex:column value="{!n.LastName}" />
+        <apex:column value="{!n.Phone}" />
+       <apex:column value="{!n.Email}" />  
+       <apex:column value="{!n.City__c}" />
+      <apex:column value="{!n.State_Province2__c}" />  
+            <apex:column width="250px" value="{!n.Availability__c}" />
+       <apex:column value="{!n.Number_of_Certifications__c}" />
+       <apex:column value="{!n.Number_of_Reviews__c}" />
+       
+       
+        <apex:facet name="footer">Showing Page # {!pageNumb} of {!totalPages} rendered</apex:facet>
+   </apex:pageBlockTable>
+   
+   
+     </apex:outputPanel>
+   </apex:pageBlockSection>
+   </apex:outputPanel>
+
+</apex:pageBlock>
+</apex:form>
+</apex:page>

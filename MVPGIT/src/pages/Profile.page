@@ -1,0 +1,890 @@
+<apex:page sidebar="flase" cache="true" expires="60" StandardController="volunteer__c" extensions="ProfileExtension" showHeader="false" standardStylesheets="true" action="{!initCheck}" >
+  
+   <!-- Page Header -->
+ 
+ 
+          
+ <!--Styles-->
+
+<style type="text/css">
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Roboto:300,400');
+
+body {
+   font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.bPageBlock .labelCol {
+    font-size:16px;
+}
+
+
+.well {  //background gray
+    background-color: #ededed;
+    border: 1px solid #dddddd;
+    box-shadow: none;
+    border-radius: 0px;
+}
+
+
+h1 {
+    margin-bottom: 15px;
+    margin-top: 25px;
+    color: #E58B1F;
+    padding-top: 5px;
+    font-weight: 400;
+    font-size: 24px;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    
+}
+.pbSubheader h3{        
+     margin-right:80%;
+     Color: #094d8d !important;
+     Font-weight: 300;
+     Font-size:32px !important;
+     font-family: Roboto,sans-serif;
+     Margin-right: 0;
+     Text-align:left;
+     Float:left;       
+  }
+
+body .bPageBlock .pbBody .blue .pbSubheader {
+    background-color: #ddd;
+}
+
+body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, 
+body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock,
+ body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, 
+ body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+    background-color: #fff; 
+    border-bottom: 1px solid #eaeaea;
+    border-left: 1px solid #eaeaea;
+    border-right: 1px solid #eaeaea;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;    
+}
+
+
+.pbSubheader .brandTertiaryBgr tertiaryPalette {
+       Text-align:left;
+}
+
+.apexp .bPageBlock p {
+    margin-bottom: 0;
+    font-weight: 300;
+    color: 333;
+    color: #222;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.bPageBlock .labelCol, body .print .topics-label {
+    font-weight: normal;
+}
+
+input[type='text'], input[type='password'], input[type='number']{
+    width: 50%;
+    font-size: 14px;  
+   
+     
+    }
+    
+ textarea, .ui-dropdown, .input-placeholder{
+    width: 50%;
+    font-size: 14px;  
+    }
+
+select option, select optgroup, select {
+     font-size: 14px;
+     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+     font-weight:300;
+}
+ 
+
+img {
+    border: 0;    
+    
+}
+
+
+
+.apexp .bPageBlock p {    
+    color: #4a4a56;
+}
+
+body .bEditBlock .pbBody .pbSubheader {
+    background-color: #ddd;    
+    border: 1px solid #dddddd;
+    box-shadow: none;
+    border-radius: 0px;
+}
+
+
+
+.pbSubheader .brandTertiaryBgr tertiaryPalette {
+
+       Text-align:left;
+
+}
+Label, .label-placeholder {
+                Font-size:16px;
+                font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+                Color: #4a4a56;
+}
+
+
+th {
+    font-weight:normal;
+    
+}
+
+body .btn {
+    background: #094d8d;
+    width: 150px;
+    height: 30px;
+    color: white;
+    font-size: 16px;
+    font-weight: 300;
+    border: none;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+
+/*   ------------ */
+
+.pbSubExtra {
+    display:none;
+}
+   
+  
+/* ----*/
+p  {
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-style: normal;
+    font-weight:normal;
+    padding-left: 20px;
+    padding-right:20px;
+    font-size:24px;
+    font-weight:300;
+}
+ 
+input[type=‘text’], input[type=‘password’], input[type=‘number’], input, textarea, select, button, meter, progress, body .bDetailBlock.bPageBlock .pbBody .labelCol, body .bDetailBlock.bPageBlock .pbBody .dataCol, body .bDetailBlock.bPageBlock .pbBody .data2Col, body .bPageBlock.bEditBlock .pbBody .labelCol, body .bPageBlock.bEditBlock .pbBody .dataCol, body .bPageBlock.bEditBlock .pbBody .data2Col {
+ padding-top: 3px;
+      color: #4a4a56;
+      font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 16px;
+      padding-bottom: 3px;
+      font-weight:300;
+}
+ 
+td .data2Col {
+    padding-top: 15px;
+}
+ 
+ body td {
+   font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+ }
+ 
+ </style>
+  <!-- Begin Form --> 
+  <apex:define name="body">
+  <apex:form id="form" style="width:100%; text-align:center; margin:auto;" >
+
+  
+      <apex:messages id="error" styleClass="errorMsg" layout="table" style="margin-top:lem"/>
+
+        <apex:pageBlock mode="edit">
+         <apex:outputPanel style="display:block; background-color:#094d8d;">
+        <div class="header"><br/>
+    <img src="{!$Resource.Logo}" width="15%"/> &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="{!$Resource.Logo1}" width="15%"/>
+  </div><br/>
+        
+        <apex:outputLabel value="Volunteer Profile" style="display:block;color:#ffffff;font-size:25px;"/>
+        
+        </apex:outputPanel><br/>
+        
+
+        <!--PageBlocksection -->      
+        <apex:outputPanel layout="block">
+        <apex:pageBlockSection columns="1" title="Contact Information"> <br/>
+        
+       <!-- <marquee behavior="scroll" style="color:#4a4a56;" direction="left">Please Fill All the Required Fields Which are Marked as Astrek (*) Below</marquee>  -->
+
+        <apex:outputLabel >All fields marked with an asterisk (*) are required</apex:outputLabel>  <br/>   
+            
+          
+        
+         <apex:outputLabel value="Please select your Preferred Title" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectSalutation}" />
+                 <apex:pageBlockSectionItem >
+           Preferred Title<span style="color:#4a4a56;">*</span>
+                    <apex:selectList value="{!selSalutate}" id="autotitle1" multiselect="false" size="1"> 
+                              <apex:selectOptions value="{!SalutationOptions}"/> 
+                       </apex:selectList>                       
+             </apex:pageBlockSectionItem>
+             
+                                                
+        <apex:outputLabel value="Please enter First Name" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedFirstName}" />
+        <apex:pageBlockSectionItem >
+       First Name<span style="color:#4a4a56;">*</span>  <apex:inputtext value="{!FirstName}" />
+       </apex:pageBlockSectionItem>
+       
+        <apex:pageBlockSectionItem >
+       Middle Initial <apex:inputtext value="{!MiddleInitial}" />
+         </apex:pageBlockSectionItem>
+        
+        <apex:outputLabel value="Please enter Last Name" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedLastName}" />
+         <apex:pageBlockSectionItem >
+          Last Name<span style="color:#4a4a56;">*</span>                   
+                            <apex:inputText value="{!LastName}" required="true"/>  
+        </apex:pageBlockSectionItem>
+        
+        
+          <apex:outputLabel value="Please enter Phone Number" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedPhone}" />
+        <apex:pageBlockSectionItem >
+          Phone<span style="color:#4a4a56;">*</span>
+          <apex:inputtext value="{!phone}"/>
+          </apex:pageBlockSectionItem>   
+          
+        <apex:pageBlockSectionItem >
+         Email<span style="color:#4a4a56;">*</span>
+          <apex:outputText value="{!Email}" />
+          </apex:pageBlockSectionItem>
+        
+        
+        <br/>
+        
+        
+        <apex:outputLabel value="Please select country" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedCountry}" />
+        <apex:pageBlockSectionItem >
+          Country<span style="color:#4a4a56;">*</span>
+        <apex:inputField value="{!volunteer__c.Country1__c}"/>
+        </apex:pageBlockSectionItem>
+        
+        
+        <apex:pageBlockSectionItem >
+        Street Address<apex:inputText value="{!StreetAddress}" />
+        </apex:pageBlockSectionItem>
+        
+         <apex:outputLabel value="Please enter City" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedCity}" />
+        <apex:pageBlockSectionItem >
+         City<span style="color:#4a4a56;">*</span>
+        <apex:inputtext id="autocity" value="{!City}"/>
+         </apex:pageBlockSectionItem>
+         
+        <apex:pageBlockSectionItem >
+       State / Province<apex:inputField value="{!volunteer__c.State_Province2__c}"/>
+        </apex:pageBlockSectionItem>                                   
+        
+         <apex:pageBlockSectionItem >
+        Zip / Postal Code<apex:inputText value="{!ZipPostalCode}"/>
+         </apex:pageBlockSectionItem>
+         </apex:pageBlockSection>
+         </apex:outputPanel>
+        <br/>
+        
+
+      <apex:outputPanel layout="block" >
+
+      <apex:pageBlockSection columns="1" showHeader="true" title="Emergency Contact information">
+      <br/>
+      
+      <apex:pageBlockSectionItem >
+         Name <apex:inputtext value="{!EmergencyName}" />
+          </apex:pageBlockSectionItem>
+          
+          <apex:pageBlockSectionItem >
+          Relationship <apex:inputtext value="{!EmergencyRelationship}" />
+          </apex:pageBlockSectionItem>
+          
+           <apex:pageBlockSectionItem >
+        Telephone  <apex:inputtext value="{!EmergencyTelephone}" />
+           </apex:pageBlockSectionItem>
+           
+            <apex:pageBlockSectionItem >
+         Address <apex:inputtextarea rows="3" cols="5" value="{!EmergencyAddress}" />
+           </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+   
+    </apex:outputPanel><br/>
+  
+  
+       <apex:outputPanel layout="block">
+        <apex:pageBlockSection columns="1" showHeader="true" title="More About You">      
+               
+            <apex:outputLabel value="Please select at least one Language" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectLanguage}" />
+       <apex:pageBlockSectionItem >          
+         <p>Please select all languages in which you are fluent (check all that apply)<span style="color:#4a4a56;">*</span></p>
+        </apex:pageBlockSectionItem>        
+        <apex:pageBlockSection columns="2" id="test12">    
+       <c:MultiSelectPicklist leftLabel="All languages"
+                leftOption="{!LanguageOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!LanguageOptionsselected}"
+                size="10"
+                width="200px"/>                
+      </apex:pageBlockSection><br/>
+      
+      <apex:pageBlockSectionItem >
+      Other (please specify)<apex:inputtext value="{!OtherLanguages}" />
+               </apex:pageBlockSectionItem><br/>
+               
+        
+        
+        <apex:outputLabel value="Please List at least one country where you have worked in education" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedListOfCountries}" />         
+              <apex:pageBlockSectionItem > 
+          Please list all countries where you have worked in education (separated by commas)<span style="color:#4a4a56;">*</span><br/>
+        </apex:pageBlockSectionItem>
+        <apex:inputtextarea cols="55" rows="2" id="autocountryeducation" value="{!ListOfCountriesyouHaveWorked}" />  <br/>
+               
+         
+        
+      <apex:outputLabel value="Please make a selection" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedServe}" />         
+             <apex:pageBlockSectionItem >
+          Where would you like to serve?(please select one)<span style="color:#4a4a56;">*</span>
+          </apex:pageBlockSectionItem>
+        <apex:selectList value="{!selServe}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!ServeOptions}" />
+                                                </apex:selectList>
+        
+        </apex:pageBlockSection>
+        </apex:outputPanel><br/>
+        
+        
+      <apex:outputPanel layout="block" >
+      <apex:pageBlockSection columns="1" showHeader="true" title="International Service"><br/>
+      
+         Do Have a Valid Passport?<apex:pageBlockSectionItem > 
+       <apex:selectList value="{!PassportNumber}" size="1" multiselect="false">                                                    
+                                                    <apex:selectOptions value="{!HavePassportOptions}"/>
+                                                </apex:selectList>   
+      </apex:pageBlockSectionItem><br/>
+      
+      Country Of Issuance<apex:pageBlockSectionItem >
+      <apex:inputtext value="{!CountryOfIssuance}" />
+        </apex:pageBlockSectionItem><br/>
+        
+        Expiration Date (MM/DD/YYYY)<apex:pageBlockSectionItem >
+        <apex:inputtext value="{!ExpirationDate}" html-placeholder="MM/DD/YYYY" />
+        </apex:pageBlockSectionItem><br/>
+        
+         Please list all countries you have visited within the last 12 months(separated by commas)<apex:pageBlockSectionItem >       
+      <apex:inputtext value="{!ListAllCountriesYouHaveVisitedWithinThe12Months}" />
+     </apex:pageBlockSectionItem><br/>
+     
+     
+      </apex:pageBlockSection>
+      </apex:outputPanel><br/>
+      
+      
+      
+      <apex:outputPanel layout="block">  
+      <apex:pageBlockSection columns="1" showHeader="true" title="Your Current Employment status">
+          
+          
+          
+         <p>Please tell us about your current employment status. If retired, please select “Retired” and enter the year of your retirement as well as the last institution and title you had where you were employed.</p>                                                                                                                      
+                                                                                                                                  
+          <br/>
+          
+      <apex:outputLabel value="Please provide an answer" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedYearsOfExperience}" />         
+          Years of experience in education<span style="color:#4a4a56;">*</span><apex:pageBlockSectionItem >          
+      <apex:inputtext id="autoyearseducation" value="{!YearsOfExperienceInEducation}" />
+      </apex:pageBlockSectionItem> <br/>
+      
+      
+      
+       <apex:outputLabel value="Please make a selection" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectedEmpStatus}" />         
+          Employment Status<span style="color:#4a4a56;">*</span><apex:pageBlockSectionItem >         
+       <apex:selectList value="{!selEmpStatus}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!EmpStatusOptions}" />
+                                                </apex:selectList>
+       </apex:pageBlockSectionItem> <br/>
+      
+      
+      
+      
+      
+      
+       If Retired (please specify)<apex:pageBlockSectionItem >
+      <apex:inputtext value="{!Retired}" />
+       </apex:pageBlockSectionItem><br/>
+       
+       Name of your school or organization<apex:pageBlockSectionItem >
+      <apex:inputtext value="{!NameOfUrSchoolOrOrganization}" />
+       </apex:pageBlockSectionItem><br/>
+       
+       City and state or country where your school or organization is located<apex:pageBlockSectionItem >
+      <apex:inputtext value="{!YourSchoolOrOrganizationLocated}" />
+      </apex:pageBlockSectionItem><br/>
+      
+      Your job title<apex:pageBlockSectionItem >
+      <apex:inputtext value="{!YourJobTitle}" />
+      </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+      </apex:outputPanel><br/>
+      
+          
+      <apex:outputPanel layout="block" >
+      <apex:pageBlockSection columns="1" showHeader="true" title="Your Educational Background">
+        
+        
+      
+         
+          
+        <apex:outputLabel value="Please select at least one Subject Content specialties" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectSubject}" />
+      <apex:pageBlockSectionItem >
+      <p> Subject Content specialties (check all that apply)<span style="color:#4a4a56;">*</span></p>
+        </apex:pageBlockSectionItem>        
+        <apex:pageBlockSection id="test123">
+       <c:MultiSelectPicklist leftLabel="Subject Content specialties"
+                leftOption="{!SubjectSpecialitiesOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!SubjectSpecialitiesOptionsselected}"
+                size="12"
+                width="300px"/>
+      </apex:pageBlockSection>
+      
+      
+      <apex:inputtext label="Other (please specify)" size="40" value="{!SubjectSpecialitiesOther}"/>
+      
+ 
+      
+      <apex:outputLabel value="Please select at least one Area specialty" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectArea}" />
+      <apex:pageBlockSectionItem >
+      <p>Area specialties (check all that apply)<span style="color:#4a4a56;">* </span></p>
+        </apex:pageBlockSectionItem>        
+        <apex:pageBlockSection id="test1">
+       <c:MultiSelectPicklist leftLabel="Area specialties"
+                leftOption="{!AreaSpecialitiesOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!AreaSpecialitiesOptionsselected}"
+                size="9"
+                width="300px"/>
+      </apex:pageBlockSection>
+      
+      <apex:inputtext label="Other (please specify)" size="40" value="{!AreaSpecialitiesOther}" />
+      
+      
+     <apex:outputLabel value="Please select at least one Grade level specialty" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectGrade}" />
+          <apex:pageBlockSectionItem >
+          <p>Grade level specialties (check all that apply)<span style="color:#4a4a56;">*</span></p>
+        </apex:pageBlockSectionItem>        
+        <apex:pageBlockSection id="test2">
+       <c:MultiSelectPicklist leftLabel="Grade level specialties"
+                leftOption="{!GradeSpecialitiesOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!GradeSpecialitiesOptionsselected}"
+                size="6"
+                width="300px"/>
+      </apex:pageBlockSection>
+      
+      
+       <apex:inputtext label="Other (please specify)" size="40" value="{!GradeLevelOther}" />
+ 
+ 
+  <apex:outputLabel value="Please select at least one Instructional specialty" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectInstructional}" />
+         <apex:pageBlockSectionItem >          
+         <p>Instructional specialties (check all that apply)<span style="color:#4a4a56;">* </span></p>
+         </apex:pageBlockSectionItem>  
+       <apex:pageBlockSection id="test3">
+       <c:MultiSelectPicklist leftLabel="Instructional specialties"
+                leftOption="{!InstructionalSpecialitiesOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!InstructionalSpecialitiesOptionsselected}"
+                size="14"
+                width="300px"/>
+      </apex:pageBlockSection>
+      
+           
+      <apex:inputtext label="Other (please specify)" size="40" value="{!InstructionalOther}" />
+        
+     <apex:outputLabel value="Pleas select at least one Institution specialt" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectInstitutions}" />
+         <apex:pageBlockSectionItem >
+           <p>Institutions specialties (check all that apply)<span style="color:#4a4a56;">* </span></p>
+        </apex:pageBlockSectionItem>        
+        <apex:pageBlockSection id="test4">
+       <c:MultiSelectPicklist leftLabel="Institutions specialties"
+                leftOption="{!InstitutionsSpecialitiesOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!InstitutionsSpecialitiesOptionsselected}"
+                size="8"
+                width="250px"/>
+      </apex:pageBlockSection>
+      
+      <apex:inputtext label="Other (please specify)"  size="40" value="{!InstitutionsOther}" />
+      
+      
+      
+      <br/>
+
+      
+      <apex:outputLabel value="Please make a selection" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectFaith}" />
+                 
+            Have you worked with a Faith based institution?<span style="color:#4a4a56;">*</span>
+      <apex:pageBlockSectionItem >
+      <apex:selectList value="{!selFaithBasedInstitute}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!FaithBasedInstituteOptions}"/>
+                                                </apex:selectList> 
+                                                </apex:pageBlockSectionItem>
+       <br/>
+      
+      
+      
+     
+                 If so, please choose<apex:pageBlockSectionItem >
+       <apex:selectList value="{!selFaithChoose}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!FaithChooseOptions}" />
+                                                </apex:selectList> 
+                                                </apex:pageBlockSectionItem>
+                                                <br/>
+                                                
+                                                
+      <apex:outputLabel value="Please make a selection" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectOtherAccrediting}" />
+                 Do you have experience with AdvancED or any other accrediting agency?<span style="color:#4a4a56;">*</span>
+                 <apex:pageBlockSectionItem >            
+    <apex:selectList value="{!selOtherAccrediting}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!OtherAccreditingOptions}" />
+                                                </apex:selectList> 
+                                                </apex:pageBlockSectionItem>
+                                                <br/>
+                                                
+                                                
+      </apex:pageBlockSection>
+      </apex:outputPanel>
+     
+     
+      
+      <apex:outputPanel layout="block">    
+      <apex:pageBlockSection columns="1" showHeader="true" title="Your Accreditation Experience">
+        
+     <apex:pageBlockSectionItem >
+     
+        <p>Accreditation affiliation and experience (check all that apply)</p>
+        </apex:pageBlockSectionItem>       
+        
+          <apex:pageBlockSection id="test5">
+       <c:MultiSelectPicklist leftLabel="Accreditation affiliation and experience"
+                leftOption="{!AccreditationOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!AccreditationOptionsselected}"
+                size="5"
+                width="450px"/>
+      </apex:pageBlockSection>
+      
+      <apex:inputtext label="Other (please specify)"  size="40" value="{!AccreditationOther}"/> 
+      
+       <apex:pageBlockSectionItem >       
+          <p> In what roles have you served AdvancED? (check all that apply)</p>
+        </apex:pageBlockSectionItem>  
+        
+          <apex:pageBlockSection id="test6">
+       <c:MultiSelectPicklist leftLabel="Roles"
+                leftOption="{!RolesOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!RolesOptionsselected}"
+                size="6"
+                width="350px"/>
+      </apex:pageBlockSection>
+      
+      
+      
+       <apex:pageBlockSectionItem >
+               <p>  AdvancED Engagement Review Team Experience (check all that apply)</p>
+        </apex:pageBlockSectionItem>             
+          <apex:pageBlockSection id="test7">
+       <c:MultiSelectPicklist leftLabel="AdvancED Engagement Review Team Experience"
+                leftOption="{!TeamOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!TeamOptionsselected}"
+                size="10"
+                width="350px"/>
+      </apex:pageBlockSection>
+      
+      
+       <apex:pageBlockSectionItem >
+       
+ <p> Regions where you have already served as a Lead Evaluator or team member (check all that apply)</p>
+        </apex:pageBlockSectionItem> 
+        
+          <apex:pageBlockSection id="test8">
+       <c:MultiSelectPicklist leftLabel="Regions"
+                leftOption="{!RegionsOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!RegionsOptionsselected}"
+                size="8"
+                width="350px"/>
+      </apex:pageBlockSection>
+      
+      <br/>
+       <apex:outputLabel value="Please make a selection" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectEleot}" />
+                 <apex:pageBlockSectionItem >
+            I am eleot 2.0 certified<span style="color:#4a4a56;">*</span>
+            <apex:selectList value="{!selEleot}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!EleotOptions}" />
+                                                </apex:selectList>
+                                                 </apex:pageBlockSectionItem>
+                                                 
+      </apex:pageBlockSection>
+      </apex:outputPanel><br/>
+      
+        
+     <apex:outputPanel layout="block" >
+      <apex:pageBlockSection columns="1" showHeader="true" title=" How I Want to Serve">
+     
+      <apex:outputLabel value="Please select at last one option" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectServe}" />
+          <apex:pageBlockSectionItem >          
+ <p>I would like to serve as (check all that apply)<span style="color:#4a4a56;">*</span></p>
+        </apex:pageBlockSectionItem>        
+        <apex:pageBlockSection id="test9">
+       <c:MultiSelectPicklist leftLabel="I would like to serve as"
+                leftOption="{!LiketoserveOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!LiketoserveOptionsselected}"
+                size="5"
+                width="350px"/>
+      </apex:pageBlockSection><br/>
+      
+      
+     
+     
+      
+     <apex:outputLabel value="Please make a selection" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectAvailability}" />
+                 Availability<span style="color:#4a4a56;">*</span>
+                 <apex:pageBlockSectionItem >   
+            <apex:selectList label="Availability" value="{!selAvailability}" size="1" multiselect="false">
+                                                    
+                                                    <apex:selectOptions value="{!AvailabilityOptions}" />
+                                                </apex:selectList> 
+                                                </apex:pageBlockSectionItem>
+                                                <br/>
+     </apex:pageBlockSection>
+     </apex:outputPanel><br/>
+     
+     
+     
+     <apex:outputPanel layout="block">  
+      <apex:pageBlockSection columns="1" showHeader="true" title="Types of Reviews"><br/>
+      <br/>
+      
+       
+          
+ <apex:outputLabel value="Please select at least one team type" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectTypesofteams}" />         
+         <apex:pageBlockSectionItem >
+         <p>On what types of teams are you interested in serving?<span style="color:#4a4a56;">*</span></p>
+        </apex:pageBlockSectionItem>        
+        <apex:pageBlockSection id="test10">
+       <c:MultiSelectPicklist leftLabel="Teams"
+                leftOption="{!TypesofteamsOptionsleft}"
+                rightLabel="Selected"
+                rightOption="{!TypesofteamsOptionsselected}"
+                size="9"
+                width="350px"/>
+      </apex:pageBlockSection>
+      </apex:pageBlockSection>
+      </apex:outputPanel> <br/>
+      
+      
+      <apex:outputPanel layout="block" >
+     <apex:pageBlockSection columns="1" showHeader="true" title="Tell Us Little More">
+         
+        
+        
+          <p>Your biographical sketch should be 200 words or less, and should be written in third person. Include:<br/>
+<b>•</b> Current role/position<br/>
+<b>•</b> Education credentials (date attained not necessary)<br/>
+<b>•</b> Professional experiences (jobs and roles)<br/>
+<b>•</b> Expertise/experience related to AdvancED<br/>
+<b>•</b> Publications (optional, if any)<br/>e
+
+Please do not include personal or family information. Below is an example of a good biographical sketch.
+
+                                   <br/> <br/>
+                                  
+Dr. Bohling joined AdvancED in 2006, and serves as the Chief of Global Operations leading the organization’s global initiatives and
+partnerships and overseeing the global continuous improvement and accreditation functions, policies, and procedures for accredited
+institutions and school systems in the AdvancED network around the world. Bohling’s professional career spans 39 years, including
+the fields of education, business, and law. Her experience includes teacher, administrator, deputy state superintendent,
+interpreter/translator, and attorney. She was the chief architect in the design of Wyoming’s assessment and accountability system
+under No Child Left Behind and served on the national committee for formative assessment. Dr. Bohling has earned degrees from the
+University of Tulsa College of Law, University of Wyoming, Northeastern State University in Oklahoma, and Oklahoma State
+University.</p>                                                                                                                                                                                              
+      
+      <br/>
+         
+        <apex:outputLabel value="Please provide your biographical sketch" style="display:block;color:red;" styleClass="multiselect" rendered="{!SelectBiographicalSketch}" />
+        <apex:pageBlockSectionItem >
+           <p>Please write a brief (200 words or less) biographical sketch.<span style="color:#4a4a56;">*</span></p>
+           </apex:pageBlockSectionItem>
+          <apex:inputtextarea id="autobio" cols="175" rows="10" html-maxlength="1024" value="{!BiographicalSketch}" style="width: 70%;"/>
+          
+     </apex:pageBlockSection>
+     </apex:outputPanel>
+          
+          
+            
+            <apex:outputPanel layout="block"> 
+     <apex:pageBlockSection columns="1" showHeader="true" title="Essay">
+     <apex:outputLabel value="Please provide your essay" style="display:block;color:red;" styleClass="multiselect" rendered="{!Selectqualifications}" />
+     <apex:pageBlockSectionItem >
+          <p>Please write a brief (300 words or less) statement about your qualifications and why you want to serve as a volunteer.<span style="color:#4a4a56;font-size:15px;">* </span> </p>
+           </apex:pageBlockSectionItem>
+       <apex:inputtextarea id="autoessay" cols="175" html-maxlength="1550" rows="10" value="{!Qualification}" style="width: 70%;"/>
+      
+     </apex:pageBlockSection>
+      </apex:outputPanel> 
+ 
+ 
+    <apex:outputPanel layout="block" >
+    <apex:pageBlockSection columns="1" showHeader="true" title="Professional References"> 
+    
+    <apex:outputLabel value="Please Enter correct email format in Reference 1" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!EmailFormat1}" />
+    <apex:outputLabel value="Please Enter correct email format in Reference 2" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!EmailFormat2}" />
+        <apex:outputLabel value="{!ErrorMessage}" style="display:block;color:red;align:center;" styleClass="multiselect" rendered="{!SelectReference}" />
+    
+     <apex:pageBlockSection columns="2" showHeader="false">     
+       
+       <apex:pageBlockSectionItem >
+          <p><b>Professional Reference #1</b></p>
+     </apex:pageBlockSectionItem>
+     
+     <apex:pageBlockSectionItem >
+          <p><b>Professional Reference #2</b></p>
+              </apex:pageBlockSectionItem>
+             
+              <apex:pageBlockSectionItem >
+          Name<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autoname1" value="{!Ref1Name}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>      
+        
+     
+      <apex:pageBlockSectionItem >
+          Name<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autoname2" value="{!Ref2Name}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+        
+     
+      <apex:pageBlockSectionItem >
+          Company<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autocompany1" value="{!Ref1Company}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+          Company<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autocompany2" value="{!Ref2Company}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>      
+     
+     
+     
+     
+     
+      <apex:pageBlockSectionItem >
+          Email Address<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autoemail1" value="{!Ref1EmailAddress}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+     
+      <apex:pageBlockSectionItem >
+         Email Address<span style="color:#4a4a56;">* </span>
+     <apex:inputtext id="autoemail2" value="{!Ref2EmailAddress}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+        Phone Number<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autophone1" value="{!Ref1PhoneNumber}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+     
+      <apex:pageBlockSectionItem >
+          Phone Number<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autophone2" value="{!Ref2PhoneNumber}" style="width:250px;"/>
+                 </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+          Country<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autocountry1" value="{!Ref1Country}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+     
+      <apex:pageBlockSectionItem >
+          Country<span style="color:#4a4a56;">*</span>
+     <apex:inputtext id="autocountry2" value="{!Ref2Country}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+      
+      <apex:pageBlockSectionItem >
+          Address          
+     <apex:inputtext value="{!Ref1Address}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+          Address
+     <apex:inputtext value="{!Ref2Address}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+      Address2   
+     <apex:inputtext label="Address2" value="{!Ref1Address2}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem > 
+      Address2   
+     <apex:inputtext label="Address2" value="{!Ref2Address2}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+         State/Province
+     <apex:inputtext value="{!Ref1StateProvince}" style="width:250px;"/> 
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+          State/Province
+     <apex:inputtext value="{!Ref2StateProvince}" style="width:250px;"/> 
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+         Zip/Postal Code
+     <apex:inputtext value="{!Ref1ZipPostalCode}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem >
+          Zip/Postal Code
+     <apex:inputtext value="{!Ref2ZipPostalCode}" style="width:250px;"/>
+      </apex:pageBlockSectionItem>
+     
+     
+     
+     
+     
+     </apex:pageBlockSection>
+
+     </apex:pageBlockSection> 
+     </apex:outputPanel>   
+     
+      <br/>
+
+      <!-- Button Section -->    
+     
+      
+     <div align="center" draggable="false" >      
+             <apex:commandButton value="Cancel" onclick="window.top.close()"/>  
+            <apex:commandButton value="Submit" action="{!submitProfile}"/>            
+     
+     </div><br/>
+     
+      
+      
+      
+    </apex:pageBlock>
+      
+  </apex:form>
+        </apex:define>
+  
+</apex:page>

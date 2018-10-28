@@ -1,0 +1,41 @@
+<apex:page showHeader="false" title="Volunteer Thankyou" standardStylesheets="true">
+
+
+<style>
+
+
+</style>
+  <!-- Begin Form --> 
+<apex:form id="form" style="width:100%; text-align:center; margin:auto;" >
+
+
+    
+    <apex:outputPanel style="display:block; background-color:#094d8d;">
+        <div class="header">
+    <img src="{!$Resource.Logo}" width="20%"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+    <img src="{!$Resource.Logo1}" width="20%"/>
+  </div>
+        
+        <apex:outputLabel style="display:block;color:#ffffff;font-size:25px;"/>        
+        </apex:outputPanel>
+      <apex:define name="body">
+      <div style="text-align:center;font-size:25px;width=125px;text-align:center;"><br/>
+            <h2>  <p> <apex:outputText value="Thank you for completing the AdvancED | Measured Progress Volunteer Profile." /> </p> </h2>
+            
+         <h2>  <p> <apex:outputText value="Your information has been received. You will hear from us soon." /> </p> </h2> 
+         
+         
+           </div>
+      
+      <br/> 
+      
+      <br/>
+    
+    
+   </apex:define>
+  
+  
+  
+  </apex:form>
+</apex:page>

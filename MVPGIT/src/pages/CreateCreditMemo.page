@@ -1,0 +1,23 @@
+<apex:page controller="CreateCreditMemoController" tabStyle="Order" >
+     <apex:form >
+        <apex:pageBlock >
+            <apex:outputPanel >
+                <apex:pageMessages id="message" />
+            </apex:outputPanel>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Select All Products" action="{!selectAll}" rerender="orderItemTable,message" disabled="{!buttonsDisabled}" />
+                <apex:commandButton value="Unselect All Products" action="{!unselectAll}" rerender="orderItemTable,message" disabled="{!buttonsDisabled}" />
+                <apex:commandButton value="Create Credit Memo" action="{!processSelection}" rerender="orderItemTable,message" disabled="{!buttonsDisabled}" />
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+           <apex:pageBlockTable ID="orderItemTable" value="{!orderItemList}" var="o">
+                <apex:column >
+                    <apex:inputCheckbox value="{!o.Adjust_Line__c }" />
+                </apex:column>
+               <apex:column value="{!o.SelltoCustomerNumber__c}"/>
+               <apex:column value="{!o.Account__c}"/>
+               <apex:column value="{!o.Line_Item__c}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,37 @@
+<apex:page showHeader="false" title="Volunteer Expire" standardStylesheets="true">
+<apex:form id="form" style="width:100%; text-align:center; margin:auto;" >   
+       
+    <apex:outputPanel style="display:block; background-color:#094d8d;">
+        <div class="header">
+    <img src="{!$Resource.Logo}" width="20%"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+    <img src="{!$Resource.Logo1}" width="20%"/>
+  </div>     
+        
+        
+        </apex:outputPanel>      
+      <apex:define name="body"> 
+      <div style="text-align:center;font-size:25px;width=125px;text-align:center; "><br/>
+      
+            <h2>  <p> <apex:outputText value="Sorry, This Content isn't available right now  !" /> </p> </h2>
+      <br/>
+            
+         <h2>  <p> <apex:outputText value="The link you followed may have expired, or the page may only be visible to an Audience you're not in." /> </p> </h2> 
+        
+        <br/>
+      <br/>
+           </div>
+      
+      <br/>
+      <br/>
+    
+    
+   </apex:define>
+   
+   
+ 
+  
+  
+  
+  </apex:form>
+</apex:page>

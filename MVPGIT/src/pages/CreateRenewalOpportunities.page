@@ -1,0 +1,44 @@
+<apex:page controller="CreateRenewalOpportunitiesController" >
+    <apex:form >
+        <apex:pageBlock >
+            <apex:outputPanel >
+                <apex:pageMessages id="message" />
+            </apex:outputPanel>
+            
+                
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Select All" action="{!selectAllOpUnit}" rerender="opUnitTable,message" />
+                <apex:commandButton value="Unselect All" action="{!unselectAllOpUnit}" rerender="opUnitTable,message" />
+                <apex:commandButton value="Create Opportunities" action="{!processOpUnitSelection}" rerender="opUnitTable,message"  />
+                <apex:commandButton value="Clear Annual Processed Flag" action="{!clearRenewalProcessedFlag}" rerender="opUnitTable,message"  />
+                <apex:commandButton value="Generate Annual Orders" action="{!createRenewalOrders}" rerender="opUnitTable,message"
+                                    onclick="if(!confirm('Are you sure? This will create all annual orders the selected operating units.')){return false;}" />
+                <apex:commandButton value="Test: Delete ALL Annual Opportunities" action="{!deleteRenewalOppty}" rerender="opUnitTable,message"
+                                    onclick="if(!confirm('Are you sure? ALL Renewal Opportunities will be deleted.')){return false;}" />
+                <!--apex:commandButton value="Cancel" action="{!cancel}" />-->
+            </apex:pageBlockButtons>
+            <span>Select:</span>
+            <apex:selectList size="1" value="{! countryOption }">
+                <apex:selectOptions value="{! selectCountryOptions}"></apex:selectOptions>
+            </apex:selectList>
+            <apex:outputLabel value="{!countryOption}" id="countryOption"></apex:outputLabel>
+            <br /> <br />
+            <span>Select:</span>
+            <apex:selectList size="1" value="{! option }">
+                <apex:selectOptions value="{! selectOptions}"></apex:selectOptions>
+            </apex:selectList>
+            <apex:outputLabel value="{!option}" id="option"></apex:outputLabel>
+            <br /> <br />
+           <apex:pageBlockTable ID="opUnitTable" value="{!operatingUnits}" var="ou">
+               <apex:column headerValue="Select" >
+                   <apex:inputCheckbox value="{!ou.selected }" />
+               </apex:column>
+               <apex:column value="{!ou.opUnit.Name}"/>
+               <!--apex:column value="{!ou.opUnit.Account__c}"/>
+               <apex:column value="{!ou.opUnit.Active__c}"/>
+               <apex:column value="{!ou.opUnit.Region__c}"/>
+               <apex:column value="{!ou.opUnit.Region__c}"/-->
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

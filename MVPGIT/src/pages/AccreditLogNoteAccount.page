@@ -1,0 +1,486 @@
+<apex:page controller="AccreditLogNoteAccountController" tabStyle="Accreditation_Log_Note__c" showHeader="true" sidebar="true" id="accreditLogNote">
+    <apex:includeScript value="{!URLFOR($Resource.jquery)}" />
+    <apex:includeScript value="{!URLFOR($Resource.datatablesjs, '/DataTables-1.10.15/media/js/jquery.dataTables.js')}" />
+    <apex:styleSheet value="{!URLFOR($Resource.datatablesjs, '/DataTables-1.10.15/media/css/jquery.dataTables.css')}" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    
+    
+		
+        <div class="searchView">
+            <div id="searchFormContainer">
+                <apex:form id="searchForm">
+                    <apex:actionFunction name="clearInputs" action="{!clearAccount}" rerender="searchForm" immediate="true" />
+                    <div class="col-md-6">
+                        
+                        <fieldset>
+                            <div class="form-group">
+                                <apex:outputLabel for="name" value="School Name" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.name}" id="name" />
+                            </div>
+                            <!--<div class="form-group">
+                                <apex:outputLabel for="city" value="City" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.ShippingCity}" id="city" />
+                            </div>-->
+                            <div class="form-group">
+                                <apex:outputLabel for="actualOrgStat" value="Actual Org Status" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.Actual_Org_Status__c}" id="actualOrgStat" />
+                            </div>
+                            <div class="form-group">
+                                <apex:outputLabel for="accredStat" value="Accreditation Status" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.Accreditation_Status__c}" id="accredStat" />
+                            </div>
+                        </fieldset>
+                    </div> 
+                    <div class="col-md-6">
+                        <fieldset>
+                            <!--<div class="form-group">
+                                <apex:outputLabel for="country" value="Country" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.ShippingCountryCode}" id="country" />
+                            </div>
+                            <div class="form-group">
+                                <apex:outputLabel for="state" value="State" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.ShippingStateCode}" id="state" onchange="dependentPicklistChange(this)" />
+                            </div>-->
+                            
+                            <div class="form-group">
+                                <apex:outputLabel for="recOrgStat" value="Recommended Org Status" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.Recommended_Org_Status__c}" id="recOrgStat" />
+                            </div>
+                            <div class="form-group">
+                                <apex:outputLabel for="recAccredStat" value="Recommended Accreditation Status" />
+                                <apex:inputField styleclass="form-control" value="{!searchContainer.Recommended_Accreditation_Status__c}" id="recAccredStat" />
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div align="center">
+                        <button class="btn btn-primary" id="search-btn" type="button" onclick="submitSearch()">Search</button>
+                        <button class="btn btn-primary" id="reset-btn" type="button" onclick="reset()">Reset</button>    
+                    </div>
+                </apex:form>
+        	</div>
+                
+            </div>
+    <!--<apex:form>-->
+        <apex:pageBlock id="pageBlock">
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <button class="btn" id="submit" type="button" onclick="processSelection();">Create Log Notes</button>
+                <button class="btn" id="clear" type="button" onclick="clearAllSelectedAccounts();">Clear All Selected Accounts</button>
+                <button class="btn" id="cancel" type="button" onclick="exit();">Cancel</button>
+            </apex:pageBlockButtons>
+            <div style="margin-top:4px;">&nbsp;</div>
+        	
+            <div id="searchResults">
+                <!-- Add search results table -->
+                <table id="resultTable" class="table table-striped table-bordered">
+                    <thead class="thead-default">
+                        <tr>
+                            <th><input type="checkbox" id="selectAll" name="selectAll" value="selectAll" class="selectAllCheckbox" /></th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Parent</th>
+                            <th>Customer Number</th>
+                            <th>Classification</th>
+                            <th>Actual Org Status</th>
+                            <!--<th>Accreditation Status</th>-->
+                            <th>Accred Status</th>
+                            <!--<th>Recommended Org Status</th>-->
+                            <th>Rec Org Status</th>
+                            <!--<th>Recommended Accreditation Status</th>-->
+                            <th>Rec Accred Status</th>
+                            <!--<th>Accreditation Expiration</th>-->
+                            <th>Accred Exp</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Country</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultBody">
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="btn-group pull-left">
+                            <button class="btn btn-sm btn-primary" id="first-btn" type="button" onclick="getFirst()">First</button>
+                            <button class="btn btn-sm btn-primary" id="prev-btn" type="button" onclick="getPrev()">Prev</button>
+                            <button class="btn btn-sm btn-primary" id="next-btn" type="button" onclick="getNext()">Next</button>
+                            <button class="btn btn-sm btn-primary" id="last-btn" type="button" onclick="getLast()">Last</button>
+                        </div>
+                    </div>
+                    <!--<div class="col-sm-4">
+                        <select name="page-size" id="page-size" onchange="setPageSize(this)" style="display: inline-block;" >
+                            <option value="5">5</option>
+                            <option value="25" selected="true">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                	</div>-->
+                    <div class="col-sm-6">
+                        <div class="page-counter pull-right" style="display:inline-block"></div>
+                    </div>
+            	</div>
+            </div>
+        </apex:pageBlock>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script type="text/javascript">
+        const logNoteId = "{!accreditLogNoteId}",
+            parentAccountId = "{!parentAccountId}";
+        
+    	var state_has_changed,                           
+                allIds = [],
+                currentPage = 0,
+                totalPages = 0,
+                lastIndex = 0,
+                pageSize = 25,
+                accountIds = [];
+		
+    	var nameField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.name}'));
+    	/*var cityField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.city}'));
+        var countryField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.country}'));
+        var stateField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.state}'));*/
+    	var actualOrgStatField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.actualOrgStat}'));
+        var accredStatField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.accredStat}'));
+        var recOrgStatField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.recOrgStat}'));
+        var recAccredStatField = $(document.getElementById('{!$Component.accreditLogNote.searchForm.recAccredStat}'));
+    
+    	var queryStr_1 = 'select Id from Account ';
+    	var queryStr_2 = 'where Id != null AND Active__c = TRUE ';
+    	var queryStr_3 = 'order by Name ASC '; //add limit if needed;
+    
+        window.onload = function() {
+                console.log('Log Note: ' + logNoteId)
+                console.log('Parent Account: ' + parentAccountId)
+                if(parentAccountId != ''){
+                    $('.searchView').hide()
+                    queryStr_2 += 'AND ParentId = \'' + parentAccountId + '\' ';
+                    doSearch();
+                    queryStr_2 = 'where Id != null AND Active__c = TRUE ';
+                }
+            
+            };
+       
+        Visualforce.remoting.timeout = 120000;
+        
+        calcPageNumbers();
+    	
+    
+    	$('body').on('click', '.selectAllCheckbox', function() {
+            //var name = $(this).val();
+            //console.log(name)
+            var checkboxes = document.getElementsByClassName('accountCheckbox');
+            if(document.getElementById('selectAll').checked){
+                console.log(document.getElementById('selectAll').checked)
+                
+                for(var i=0; i < checkboxes.length;  i++){
+                    checkboxes[i].checked = true;
+                }
+                accountIds = accountIds.concat(allIds);
+                accountIds = jQuery.unique(accountIds);
+            }
+            else{
+                console.log(document.getElementById('selectAll').checked)
+                for(var i=0; i < checkboxes.length;  i++){
+                    checkboxes[i].checked = false;
+                }
+                accountIds = accountIds.filter(function(el){
+                    return !allIds.includes(el);
+                });
+            }
+        	console.log(accountIds)
+        })
+    
+    	$('body').on('click', '.accountCheckbox', function() {
+            var name = $(this).val();
+			if(accountIds.indexOf(name) > -1){
+                 accountIds.remove(name)
+                 //this.classList.remove('selected')
+            }
+            else
+            {
+               accountIds.push(name)
+               //this.classList.add('selected')
+            }
+            //this.classList.contains('selected') ? this.classList.remove('selected') : this.classList.add('selected')
+            allSelectedChecked();
+            console.log(accountIds)
+      	})
+		     
+		function setPageSize(element) {
+            pageSize = element.options[element.selectedIndex].value;
+            reset();
+        }
+    	
+    	function reset() {
+            allIds = [];
+            currentPage = 0;
+            totalPages = 0;
+            lastIndex = 0;
+            clearInputs();
+            calcPageNumbers();
+            $('#resultBody tr').remove();
+        }
+    	
+    	function submitSearch(){
+            
+            if (nameField.val()) {
+                queryStr_2 += 'and Name like \'%' + nameField.val().replace("'", "\'") + '%\' ';
+            }
+
+            /*if (cityField.val()) {
+                queryStr_2 += 'and ShippingCity = \'%' + cityField.val().replace("'", "\'") + '%\' ';
+            }
+
+            if (countryField.val()) {
+                queryStr_2 += 'and ShippingCountryCode = \'' + countryField.val().replace("'", "\'") + '\' ';
+            }
+
+            if (state_has_changed && stateField.val() != 'undefined' && stateField.val() != '') {
+                queryStr_2 += 'and ShippingStateCode = \'%' + stateField.val().replace("'", "\'") + '%\' ';
+            }*/
+
+            if (actualOrgStatField.val()) {
+                queryStr_2 += 'and Actual_Org_Status__c = \'' + actualOrgStatField.val().replace("'", "\'") + '\' ';
+            }
+            
+            if (accredStatField.val()) {
+                queryStr_2 += 'and Accreditation_Status__c = \'' + accredStatField.val().replace("'", "\'") + '\' ';
+            }
+            
+            if (recOrgStatField.val()) {
+                queryStr_2 += 'and Recommended_Org_Status__c = \'' + recOrgStatField.val().replace("'", "\'") + '\' ';
+            }
+            
+            if (recAccredStatField.val()) {
+                queryStr_2 += 'and Recommended_Accreditation_Status__c = \'' + recAccredStatField.val().replace("'", "\'") + '\' ';
+            }
+            console.log('nameField:' + nameField.val())
+            /*console.log('cityField: ' + cityField.val())
+            console.log('countryField: ' + countryField.val())
+            console.log('stateField: ' + stateField.val()) */
+            console.log('actualOrgStatField: ' + actualOrgStatField.val())
+            console.log('accredStatField: ' + accredStatField.val())
+            console.log('recOrgStatField: ' + recOrgStatField.val()) 
+            console.log('recAccredStatField: ' + recAccredStatField.val())
+            doSearch();
+            queryStr_2 = 'where Id != null AND Active__c = TRUE ';
+        }
+    
+        function doSearch() {
+            console.log('do search')
+            allIds = [];
+            lastIndex = 0;
+			console.log(queryStr_1)
+            console.log(queryStr_2)
+            console.log(queryStr_3)
+            //initQuery();
+			Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AccreditLogNoteAccountController.getRecordIds}',
+                queryStr_1 + queryStr_2 + queryStr_3,
+                handleSearch
+            );
+            state_has_changed = false;
+        }
+		
+    	function calcPageNumbers() {
+
+            if (lastIndex > ((allIds.length - 1) - pageSize)) {
+                currentPage = Math.ceil(lastIndex / pageSize);
+            } else {
+                currentPage = Math.floor(lastIndex / pageSize);
+            }
+
+            totalPages = Math.ceil(allIds.length / pageSize);
+
+            var page_count = 'Page ' + currentPage + ' of ' + totalPages;
+            $('.page-counter').html(page_count);
+
+            if (currentPage <= 1) {
+                $('#prev-btn,#first-btn').attr('disabled', true).attr('readonly', true);
+            } else {
+                $('#prev-btn,#first-btn').attr('disabled', false).attr('readonly', false);
+            }
+
+            if (currentPage >= totalPages) {
+                $('#next-btn,#last-btn').attr('disabled', true).attr('readonly', true);
+            } else {
+                $('#next-btn,#last-btn').attr('disabled', false).attr('readonly', false);
+            }
+        }
+
+    	/*function initQuery() {
+
+            //queryStr_2 = 'where Id != null ';
+        }*/
+    	function handleSearch(result, event) {
+            allIds = result;
+            getNext();
+        }
+
+        function getFirst() {
+            lastIndex = 0;
+            getNext();
+        }
+
+        function getNext() {
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AccreditLogNoteAccountController.getRecords}',
+                getNewIds(true),
+                handleGetRecords
+            );
+        }
+
+        function getPrev() {
+            if (lastIndex > (Math.floor((allIds.length - 1) / pageSize) * pageSize)) {
+
+            }
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AccreditLogNoteAccountController.getRecords}',
+                getNewIds(false),
+                handleGetRecords
+            );
+        }
+
+        function getLast() {
+
+            if (allIds.length % pageSize) {
+                lastIndex = ((allIds.length - 1) - (allIds.length % pageSize) + 1);
+            } else {
+                lastIndex = Math.floor((((allIds.length - 1) / pageSize) - 1) * 25);
+            }
+
+            getNext();
+        }
+
+        function handleGetRecords(result, event) {
+
+            $('#resultBody tr').remove();
+
+            var newLine = '';
+            for (var i = 0; i < result.length; i++) {
+
+                //var hasParent = false;
+
+                //if (typeof result[i] != 'undefined' && typeof result[i].Parent != 'undefined' && typeof result[i].Parent.Name != 'undefined') {
+                //    hasParent = true;
+                //}
+                
+                var id = typeof result[i].Id != 'undefined' ? result[i].Id : '';
+                var name = typeof result[i].Name != 'undefined' ? result[i].Name : '';
+                var type = typeof result[i].Type != 'undefined' ? result[i].Type : '';
+                var parentId = typeof result[i].ParentId != 'undefined' ? result[i].ParentId : '';
+                var parentName = typeof result[i].ParentId != 'undefined' ? result[i].Parent.Name : '';
+                var custNum = typeof result[i].Customer_Number__c != 'undefined' ? result[i].Customer_Number__c : '';
+                var classification = typeof result[i].Classification__c != 'undefined' ? result[i].Classification__c : '';
+                var actualOrgStat = typeof result[i].Actual_Org_Status__c != 'undefined' ? result[i].Actual_Org_Status__c : '';
+                var accredStat = typeof result[i].Accreditation_Status__c != 'undefined' ? result[i].Accreditation_Status__c : '';
+                var recOrgStat = typeof result[i].Recommended_Org_Status__c != 'undefined' ? result[i].Recommended_Org_Status__c : '';
+                var recAccredStat = typeof result[i].Recommended_Accreditation_Status__c != 'undefined' ? result[i].Recommended_Accreditation_Status__c : '';
+                var accredExp = typeof result[i].Accreditation_Expiration__c != 'undefined' ? moment.utc(result[i].Accreditation_Expiration__c).format('MM/DD/YYYY') : '';
+                var city = typeof result[i].ShippingCity != 'undefined' ? result[i].ShippingCity : '';
+                var state = typeof result[i].ShippingStateCode != 'undefined' ? result[i].ShippingStateCode : '';
+                var country = typeof result[i].ShippingCountryCode != 'undefined' ? result[i].ShippingCountryCode : '';
+                
+                var selected = accountIds.indexOf(id) > -1 ? 'checked' : '';
+                
+                newLine += ('<tr data-id="'+ result[i].Id+'"><td><input type="checkbox" name="'+ result[i].Id+'" value="'+ result[i].Id+'" ' + selected + ' class="accountCheckbox">');
+                newLine += ('</td><td>' + name + '</td><td>' + type + '</td><td>' + parentName + '</td>');
+                newLine += ('</td><td>' + custNum + '</td><td>' + classification + '</td><td>' + actualOrgStat + '</td>');
+                newLine += ('</td><td>' + accredStat + '</td><td>' + recOrgStat + '</td><td>' + recAccredStat + '</td><td>' + accredExp + '</td><');
+                newLine += ('</td><td>' + city + '</td><td>' + state + '</td><td>' + country + '</td></tr>');
+                
+            }
+
+            $('#resultBody').append(newLine);
+            allSelectedChecked();
+        }
+
+        function getNewIds(forward) {
+
+            newIds = [];
+
+            if (!forward) {
+                lastIndex -= 50;
+                lastIndex = lastIndex < 0 ? 0 : lastIndex;
+            }
+
+            if (allIds.length <= pageSize) lastIndex = 0;
+
+            console.log('collecting records from ' + lastIndex + ' to ' + (parseInt(lastIndex + pageSize)));
+            for (var i = 0; i < pageSize && lastIndex <= allIds.length; i++) {
+                newIds.push(allIds[lastIndex++]);
+            }
+
+            calcPageNumbers();
+
+            return newIds;
+        }
+    
+    	/*function dependentPicklistChange(obj) {
+            if ($(obj).attr('id') == stateField.attr('id')) {
+                state_has_changed;
+            } 
+        }*/
+    
+    	function processSelection(){
+            if(accountIds.length == 0){
+                alert("There are " + accountIds.length + " accounts selected. You must select at least 1 account.");
+            }else{
+                var r = confirm("Are you sure you would like to create an accreditation log note for the " + accountIds.length + " selected accounts? ");
+                if(r == true){
+                	console.log('Create log note clicked')
+                    accountIds = jQuery.unique(accountIds);
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.AccreditLogNoteAccountController.processSelection}',
+                        accountIds,
+                        logNoteId, 
+                        (r, e) => {
+                            exit()
+                        }
+                    );
+                }
+                
+            }
+            
+        }
+    	
+    	function exit(){
+                    window.location = '{!$Site.BaseUrl}/' + logNoteId
+        }
+        
+        function clearAllSelectedAccounts(){
+            var r = confirm("Are you sure you would like to clear all selected accounts?\n\nThere are " + accountIds.length + " accounts selected. This will clear all accounts, including those not displayed on the page.");
+            if(r == true){
+                accountIds = [];
+                allSelectedChecked();
+                var checkboxes = document.getElementsByClassName('accountCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    checkboxes[i].checked = false;
+                }
+            }
+        	
+            console.log(accountIds);
+        }
+                    
+        function allSelectedChecked(){
+            var selectAllCheckbox = document.getElementById('selectAll');
+            if(arrayContainsArray(accountIds, allIds)){
+            	selectAllCheckbox.checked = true;
+            }
+            else{
+            	selectAllCheckbox.checked = false;
+            }
+        }
+                    
+        function arrayContainsArray (superset, subset) {
+ 			if (0 === subset.length || 0 === superset.length) {
+ 				return false;
+  			}
+  			return subset.every(function (value) {
+    			return (superset.indexOf(value) >= 0);
+  		});
+}  
+                   
+    </script>
+</apex:page>

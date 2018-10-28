@@ -1,0 +1,247 @@
+<apex:page StandardController="Contact" sidebar="flase"  extensions="ContactVolunteerExtension1" showHeader="false" standardStylesheets="true" cache="false">
+<!-- Page Header -->
+
+<!-- Styles css  -->
+
+<style type="text/css">
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+
+body {
+   font-family: 'Open Sans';  /*change */
+    font-weight:normal;
+    font-size:100%;
+}
+.contactTab .secondaryPalette, .individualPalette .contactBlock .secondaryPalette {
+    background-color: #E58B1F;
+    border-color: #E58B1F;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /*  margin-bottom: 15px;
+    margin-top: 5px;*/  /* remove margins */
+    color: #E58B1F;
+  /*  padding: 15px; */ /*remove padding */
+    font-weight: 300;
+    font-size: 24px;
+    font-family: 'Open Sans';
+    float:left; /*new*/
+}
+
+.contactTab .tertiaryPalette, .individualPalette .contactBlock .tertiaryPalette, .layoutEdit .individualPalette .contactBlock .tertiaryPalette {
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.apexp .bPageBlock .detailList {
+    width: auto;
+}
+
+body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+    background-color: #fff;
+     / *padding-left: 200px; */
+
+}
+bPageBlock .labelCol {
+
+font-size: 18px;
+
+}
+.pbSubheader {
+    font-weight: normal;
+    font-size: 24px;
+    
+}
+
+body .bPageBlock .pbBody .labelCol, body .print .topics-label {
+    color: #555555;    
+    
+}
+
+.bPageBlock .labelCol, body .print .topics-label {
+    font-weight: normal;
+    
+}
+
+
+/** new code ***/
+.bEditBlock input, .bEditBlock select, .bEditBlock img, .quickCreateModule input, .quickCreateModule select, .quickCreateModule img {
+    font-size: 18px;
+    color: #555;
+    font-family: 'Open Sans';
+    padding-left: 5px;
+}
+
+.pbBody, .pbBody a, .pbBody td, .lbBody a, .lbBodyDescription, .list .headerRow .noRowsHeader {
+    color: #555555;
+}
+
+body .btn {
+    background-color: #E58B1F;
+    color: #fff;
+    text-shadow: none;
+    background-image: none;
+    border: 0px;
+    padding: 11px 19px;
+    font-size: 17.5px;
+    border-radius: 0px;
+    font-weight: normal;
+    margin-left: 45px;
+    margin-bottom: 30px;
+}
+
+.bPageBlock .labelCol {
+    font-size:100%;
+}
+
+.pbSubExtra {
+    display:none;
+}
+input {
+        padding-top: 0;
+        width: 100%;
+    }
+    table.detailList {
+        width: 70% !important;
+        text-align: center;
+        margin: 0 auto;
+    }
+    
+     
+
+.message .messageTable .messageCell {
+
+vertical-align: middle;
+font-family: 'open sans';
+color: #555;
+border-color:#b4dbed;
+background-color: #c4e6f5;
+
+}
+
+ 
+
+.confirmM6, .confirmM4, .confirmM3, .confirmM2, .confirmS1 {
+border-color: #A5DC86;
+}
+
+ 
+
+.message {
+     background-color:#c4e6f5;
+     
+     
+}
+
+ 
+    
+    
+    
+</style>
+ 
+ 
+ 
+ <!-- Begin Form --> 
+ 
+  <apex:define name="body">
+  <apex:form id="form" style="width:100%; text-align:center; margin:auto;">
+
+ 
+        <apex:pageBlock mode="edit"><br/>
+        
+      
+        <!--PageBlocksection -->     
+        
+        <apex:pageBlockSection columns="1"  title="Volunteer Information"> <br/>
+       
+       
+        
+      <!--  <marquee behavior="scroll" style="color:red;" direction="left">Please Fill All the Required Fields which are Marked as Astrek (*) below</marquee> <br/><br/> -->
+         
+         
+         <apex:outputLabel style="font-size:18px;color: #555;font-family: 'Open Sans';padding-left: 5px;" value="All fields marked with an asterisk (*) are required"/>  <br/>
+ 
+        
+        
+         
+       <apex:outputLabel value="Please enter First Name" style="font-size: 18px; color: red;font-family: 'Open Sans';padding-left: 5px;"   rendered="{!EnteredFirstName}" />
+        <apex:pageBlockSectionItem >
+            First Name<span style="color:#4a4a56;">*</span>
+       <apex:inputField label="First Name"  style="width: 70%; height: 27px" value="{!contact.FirstName}" />
+        </apex:pageBlockSectionItem> <br/>
+        
+       <apex:outputLabel value="Please enter Last Name" style="font-size: 18px; color: red;font-family: 'Open Sans';padding-left: 5px;" rendered="{!EnteredLastName}" />
+                <apex:pageBlockSectionItem >
+            Last Name<span style="color:#4a4a56;">*</span>
+        <apex:inputField label="Last Name"  style="width: 70%; height: 27px" value="{!contact.LastName}" Required="false"/>  
+       </apex:pageBlockSectionItem> <br/>
+         
+       <apex:outputLabel value="Please enter Email" style="font-size: 18px; color: red;font-family: 'Open Sans';padding-left: 5px;" rendered="{!EnteredEmail}" />
+     
+     <apex:pageBlockSectionItem >
+            Email<span style="color:#4a4a56;">*</span>
+       <apex:inputField label="Email" style="width: 70%; height: 27px" value="{!contact.Email}" />   
+       </apex:pageBlockSectionItem><br/>
+       
+       
+        <apex:outputLabel value="Please enter Phone" style="font-size: 18px; color: red;font-family: 'Open Sans';padding-left: 5px;" rendered="{!Enteredphone}" />
+     
+     <apex:pageBlockSectionItem >
+            Phone<span style="color:#4a4a56;">*</span>
+       <apex:inputField label="phone" style="width: 70%; height: 27px" value="{!contact.phone}" />   
+       </apex:pageBlockSectionItem><br/>
+       
+        
+        
+        <apex:outputLabel value="Please enter Country" style="font-size: 18px; color: red;font-family: 'Open Sans';padding-left: 5px;" rendered="{!Enteredcountry}" />
+     
+     <apex:pageBlockSectionItem >
+            Country<span style="color:#4a4a56;">*</span>
+       <apex:inputField label="country" style="width: 70%; height: 27px" value="{!contact.Country1__c}" />   
+       </apex:pageBlockSectionItem><br/>      
+       
+      <apex:outputLabel value="Please enter State" style="font-size: 18px; color: red;font-family: 'Open Sans';padding-left: 5px;" rendered="{!EnteredState}" />
+     
+     <apex:pageBlockSectionItem >
+            State<span style="color:#4a4a56;">*</span>
+       <apex:inputField label="state" style="width: 70%; height: 27px" value="{!contact.State_Province2__c}" />   
+       </apex:pageBlockSectionItem><br/> 
+      
+     
+     
+       
+       </apex:pageblockSection>
+       
+       
+      
+  
+        <!-- Button Section--->
+        
+        
+<div  align="center" draggable="false" >
+          <apex:commandButton value="Submit"  style="width: 150px; height: 35px;" action="{!save}" onclick="Disablebutton()"  rendered="{!disablebutton}"/>
+          
+     
+     
+</div>
+<script>
+
+function Disablebutton()
+
+{
+
+  document.GetElementById(pageid:formid:componentId).disabled = true;
+
+}
+
+</script>
+
+      <br/><br/>
+    </apex:pageBlock>
+  </apex:form>
+        </apex:define>
+         <apex:pagemessages escape="false"/>
+
+</apex:page>

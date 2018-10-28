@@ -1,0 +1,21 @@
+<apex:page controller="OpportunityInstitutionsListController" tabStyle="Opportunity" >
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageMessages />
+                
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Select All Institutions" action="{!selectAll}" rerender="opptyInstitutionsTable" />
+                <apex:commandButton value="Unselect All Institutions" action="{!unselectAll}" rerender="opptyInstitutionsTable" />
+                <apex:commandButton value="Update Institutions" action="{!processSelection}" rerender="opptyInstitutionsTable"  />
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+           <apex:pageBlockTable ID="opptyInstitutionsTable" value="{!opptyInstitutionObjects}" var="oppty">
+                <apex:column >
+                    <apex:inputCheckbox value="{!oppty.selected }" />
+                </apex:column>
+                <apex:column value="{!oppty.account.name}"/>
+                <apex:column value="{!oppty.account.type}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
