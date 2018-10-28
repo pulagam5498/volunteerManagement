@@ -1,2 +1,0 @@
-# volunteerManagement
-Volunteer Management MVP
